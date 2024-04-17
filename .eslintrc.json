@@ -74,17 +74,16 @@
 		"@typescript-eslint/no-unsafe-assignment": "off",
 		"import/no-extraneous-dependencies": "off",
 
-
 		// My configs
 		"@typescript-eslint/no-unsafe-call": "off",
 		"@typescript-eslint/no-unsafe-member-access": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
 		"@typescript-eslint/no-redundant-type-constituents": "off",
-		// End of my configs
-
+		"jsx-a11y/label-has-associated-control": "off",
 		"jsx-a11y/control-has-associated-label": "off",
 		"unicorn/consistent-function-scoping": "off",
 		"@typescript-eslint/no-magic-numbers": "off",
+		// End of my configs
 
 		"import/no-deprecated": "error",
 		"import/order": "off",

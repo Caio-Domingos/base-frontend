@@ -1,43 +1,45 @@
-import type React from 'react'
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import type React from 'react';
 
 export interface TextInputProperties {
-	value: string
-	label?: string
-	onChange: (value: string) => void
+	value: string;
+	id: string;
+	label?: string;
+	onChange: (value: string) => void;
+	// eslint-disable-next-line unicorn/prevent-abbreviations
+	onBlur: (e: any) => void;
 }
 
-export default function Textinput({
+export default function TextInput({
 	label,
 	value,
-	onChange
+	id,
+	onChange,
+	onBlur,
 }: TextInputProperties): React.ReactElement {
 	return (
-		<div className='w-full'>
+		<div className='w-full my-2'>
 			{label ? (
 				<label
-					htmlFor='first-name'
-					className='block text-base font-medium leading-6 text-gray-100'
+					htmlFor={id}
+					className='block text-sm text-gray-800 dark:text-gray-200'
 				>
 					{label}
 				</label>
-			) : (
-				''
-			)}
-			<div>
-				<input
-					type='text'
-					name='first-name'
-					id='first-name'
-					autoComplete='given-name'
-					className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-					value={value}
-					onChange={event => onChange(event.target.value)}
-				/>
-			</div>
+			) : undefined}
+
+			<input
+				type='text'
+				id={id}
+				className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
+				value={value}
+				onChange={(event) => onChange(event.target.value)}
+				onBlur={(_) => onBlur(_)}
+			/>
 		</div>
-	)
+	);
 }
 
-Textinput.defaultProps = {
-	label: ''
-}
+TextInput.defaultProps = {
+	label: '',
+};

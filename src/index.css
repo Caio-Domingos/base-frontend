@@ -27,3 +27,11 @@
 		src: url('/fonts/Inter-Bold.woff2') format('woff2');
 	}
 }
+
+html,
+body,
+#root {
+	min-height: 100vh;
+	width: 100%;
+	overflow-x: hidden;
+}
