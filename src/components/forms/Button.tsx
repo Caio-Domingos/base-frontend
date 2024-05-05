@@ -1,21 +1,24 @@
-import type React from 'react'
+import type React from 'react';
 
 export interface ButtonProperties {
-	label: string
-	onClick: () => void
+	label: string;
+	disabled?: boolean;
+	onClick: () => void;
 }
 
 export default function Button({
 	label,
-	onClick
+	disabled = false,
+	onClick,
 }: ButtonProperties): React.ReactElement {
 	return (
 		<button
 			type='button'
-			className='inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+			className='inline-flex items-center rounded-md border border-transparent bg-rose-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none'
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{label}
 		</button>
-	)
+	);
 }

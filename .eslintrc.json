@@ -83,6 +83,7 @@
 		"jsx-a11y/control-has-associated-label": "off",
 		"unicorn/consistent-function-scoping": "off",
 		"@typescript-eslint/no-magic-numbers": "off",
+		"react/require-default-props": "off",
 		// End of my configs
 
 		"import/no-deprecated": "error",
