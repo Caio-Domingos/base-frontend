@@ -1,7 +1,13 @@
 {
 	"name": "base-frontend",
+	"version": "0.1.0",
+	"description": "This is a base frontend project",
+	"author": {
+		"name": "Caio Domingos",
+		"email": "caio.domingos@thinkless.com.br"
+	},
+	"license": "MIT",
 	"private": true,
-	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
