@@ -50,7 +50,7 @@ function App(): React.ReactElement {
 	return (
 		<Suspense fallback={<h1>Carregando...</h1>}>
 			<Provider store={store}>
-				{appComponent || <h1>Carregando...</h1>}
+				{appComponent ?? <h1>Carregando...</h1>}
 			</Provider>
 		</Suspense>
 	);
