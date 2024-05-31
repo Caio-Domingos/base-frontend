@@ -1,7 +1,7 @@
+/* eslint-disable unicorn/no-null */
 import type React from 'react';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import { store } from '@store/store';
 
 import './App.css';
@@ -18,23 +18,30 @@ function App(): React.ReactElement {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [appType, setAppType] = useState<AppType>(AppType.PortalAuth);
+	const [appComponent, setAppComponent] = useState<React.ReactElement | null>(
+		null
+	);
 
-	const appComponent = useRef<React.ReactElement>(<h1>App não encontrado</h1>);
 	useEffect(() => {
+		setAppType(AppType.PortalAuth);
+	}, []);
+
+	useEffect(() => {
+		console.log('AppType:', appType);
 		switch (appType) {
 			case AppType.PortalAuth: {
 				console.log('PortalAuth');
-				appComponent.current = <PortalAuthApp />;
+				setAppComponent(<PortalAuthApp />);
 				break;
 			}
 			case AppType.Spa: {
 				console.log('Spa');
-				appComponent.current = <SpaApp />;
+				setAppComponent(<SpaApp />);
 				break;
 			}
 			default: {
 				console.log('App não encontrado');
-				appComponent.current = <h1>App não encontrado</h1>;
+				setAppComponent(<h1>App não encontrado</h1>);
 				break;
 			}
 		}
@@ -42,7 +49,9 @@ function App(): React.ReactElement {
 
 	return (
 		<Suspense fallback={<h1>Carregando...</h1>}>
-			<Provider store={store}>{appComponent.current}</Provider>
+			<Provider store={store}>
+				{appComponent || <h1>Carregando...</h1>}
+			</Provider>
 		</Suspense>
 	);
 }

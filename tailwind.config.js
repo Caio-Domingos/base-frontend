@@ -11,8 +11,18 @@ const config = {
 	theme: {
 		extend: {
 			colors: {
+				bgLight: {
+					DEFAULT: '#F8F8FF',
+					light: '#F8F8FF',
+					dark: '#fffafa',
+				},
+				bgDark: {
+					DEFAULT: '#282C35',
+					light: '#282C35',
+					dark: '#0f0f0f',
+				},
 				primary: {
-					default: '#0497ff',
+					DEFAULT: '#0497ff',
 					50: '#e6f5ff',
 					100: '#cdeaff',
 					200: '#9bd5ff',
@@ -25,7 +35,7 @@ const config = {
 					900: '#011e33',
 				},
 				secondary: {
-					default: '#0419ff',
+					DEFAULT: '#0419ff',
 					50: '#e6e8ff',
 					100: '#cdd1ff',
 					200: '#9ba3ff',
@@ -38,7 +48,7 @@ const config = {
 					900: '#010533',
 				},
 				tertiary: {
-					default: '#04ffea',
+					DEFAULT: '#04ffea',
 					50: '#e6fffd',
 					100: '#cdfffb',
 					200: '#9bfff7',
@@ -51,7 +61,7 @@ const config = {
 					900: '#01332f',
 				},
 				success: {
-					default: '#2e7d32',
+					DEFAULT: '#2e7d32',
 					50: '#eaf2eb',
 					100: '#d5e5d6',
 					200: '#abcbad',
@@ -64,7 +74,7 @@ const config = {
 					900: '#09190a',
 				},
 				warning: {
-					default: '#ed6c02',
+					DEFAULT: '#ed6c02',
 					50: '#fdf0e6',
 					100: '#fbe2cc',
 					200: '#f8c49a',
@@ -77,7 +87,7 @@ const config = {
 					900: '#2f1600',
 				},
 				danger: {
-					default: '#d32f2f',
+					DEFAULT: '#d32f2f',
 					50: '#fbeaea',
 					100: '#f6d5d5',
 					200: '#edacac',

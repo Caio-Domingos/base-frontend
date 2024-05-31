@@ -1,9 +1,7 @@
 export default function LoginScreen(): React.ReactElement {
 	return (
-		<div>
-			<header>
-				<h1>Login</h1>
-			</header>
-		</div>
+		<main>
+			<h1>Olá</h1>
+		</main>
 	);
 }

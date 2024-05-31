@@ -28,13 +28,11 @@ const authenticatedRoutes = createBrowserRouter([
 export default function Routes(): React.ReactElement {
 	// TODO Auth logic
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [isAuthenticated, setIsAuthenticated] = useState(true);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	return (
-		<div className='routes'>
-			<RouterProvider
-				router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes}
-			/>
-		</div>
+		<RouterProvider
+			router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes}
+		/>
 	);
 }
