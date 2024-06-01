@@ -117,7 +117,7 @@ const config = {
 				xl: '2rem',
 			},
 			backgroundImage: {
-				'login-bg': "url('/public/images/login-bg.jpg')",			}
+				'login-bg': "url('/images/login-bg.jpg')",			}
 		},
 		fontFamily: {
 			sans: ['Lato', ...defaultConfig.theme.fontFamily.sans],
