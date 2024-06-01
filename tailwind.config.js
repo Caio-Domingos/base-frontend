@@ -100,9 +100,27 @@ const config = {
 					900: '#2a0909',
 				},
 			},
+			padding: {
+				'2xs': '0.125rem',
+				xs: '0.25rem',
+				sm: '0.5rem',
+				base: '1rem',
+				lg: '1.5rem',
+				xl: '2rem',
+			},
+			spacing: {
+				'2xs': '0.125rem',
+				xs: '0.25rem',
+				sm: '0.5rem',
+				base: '1rem',
+				lg: '1.5rem',
+				xl: '2rem',
+			},
+			backgroundImage: {
+				'login-bg': "url('/public/images/login-bg.jpg')",			}
 		},
 		fontFamily: {
-			sans: ['Inter', ...defaultConfig.theme.fontFamily.sans],
+			sans: ['Lato', ...defaultConfig.theme.fontFamily.sans],
 		},
 	},
 	experimental: { optimizeUniversalDefaults: true },

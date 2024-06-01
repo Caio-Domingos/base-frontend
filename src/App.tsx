@@ -27,20 +27,16 @@ function App(): React.ReactElement {
 	}, []);
 
 	useEffect(() => {
-		console.log('AppType:', appType);
 		switch (appType) {
 			case AppType.PortalAuth: {
-				console.log('PortalAuth');
 				setAppComponent(<PortalAuthApp />);
 				break;
 			}
 			case AppType.Spa: {
-				console.log('Spa');
 				setAppComponent(<SpaApp />);
 				break;
 			}
 			default: {
-				console.log('App não encontrado');
 				setAppComponent(<h1>App não encontrado</h1>);
 				break;
 			}
