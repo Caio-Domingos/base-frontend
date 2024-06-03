@@ -1,6 +1,6 @@
 import Button from './Button';
 
-interface SocialButtonProperties {
+export interface SocialButtonProperties {
 	text?: string;
 	icon: boolean;
 	onClick?: () => void;
@@ -8,7 +8,7 @@ interface SocialButtonProperties {
 
 	color?: 'dark' | 'light' | 'primary' | 'secondary' | 'tertiary';
 }
-interface SocialButtonsGroupProperties {
+export interface SocialButtonsGroupProperties {
 	buttons?: {
 		facebook?: SocialButtonProperties;
 		google?: SocialButtonProperties;

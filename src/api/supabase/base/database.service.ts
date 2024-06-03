@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { ICrud } from './ICrud.interface';
+import type { Database } from './database.interface';
 import SupabaseService from './supabase.service';
 
 export default class DatabaseService<T> implements ICrud<T> {
@@ -20,7 +21,7 @@ export default class DatabaseService<T> implements ICrud<T> {
 	};
 	private readonly supabaseService = new SupabaseService();
 
-	public client: SupabaseClient<any, any, any>;
+	public client: SupabaseClient<Database, 'public', any>;
 
 	public constructor(table: string, options: DatabaseServiceOptions = {}) {
 		this.table = table;

@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 // Public routes
 const Login = lazy(async () => import('./public/Login/Login'));
+const Register = lazy(async () => import('./public/Register/Register'));
 
 // Private routes
 const Home = lazy(async () => import('./private/Home/Home'));
@@ -12,6 +13,10 @@ const unAuthenticatedRoutes = createBrowserRouter([
 	{
 		path: '/login',
 		element: <Login />,
+	},
+	{
+		path: '/register',
+		element: <Register />,
 	},
 	{
 		path: '/',
@@ -30,9 +35,5 @@ export default function Routes(): React.ReactElement {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-	return (
-		<RouterProvider
-			router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes}
-		/>
-	);
+	return <RouterProvider router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes} />;
 }
