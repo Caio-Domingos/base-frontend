@@ -1195,6 +1195,18 @@
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
+"@react-input/core@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.npmjs.org/@react-input/core/-/core-1.0.12.tgz"
+  integrity sha512-lZDQjphsJenWCD0mcflsyneLnb2a7bFAgAVzih9diEcUjKopcK+QOXhz0a0PHEp8k5LEKpYadjwyltAGOOhL2g==
+
+"@react-input/mask@^1.2.1":
+  version "1.2.5"
+  resolved "https://registry.npmjs.org/@react-input/mask/-/mask-1.2.5.tgz"
+  integrity sha512-xouBATnitQqhgKLgu6/J2IZRu7kzqm/tFw2ToFnk6EkRzWs5dawlcF8asASMu7LCDrCqSkjwN+/sscEMG7IXog==
+  dependencies:
+    "@react-input/core" "^1.0.12"
+
 "@reduxjs/toolkit@^2.2.3":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@reduxjs/toolkit/-/toolkit-2.2.3.tgz"
@@ -1251,6 +1263,11 @@
   version "4.14.3"
   resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.14.3.tgz"
   integrity sha512-8ybV4Xjy59xLMyWo3GCfEGqtKV5M5gCSrZlxkPGvEPCGDLNla7v48S662HSGwRd6/2cSneMQWiv+QzcttLrrOA==
+
+"@rollup/rollup-linux-x64-musl@4.14.3":
+  version "4.14.3"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.14.3.tgz"
+  integrity sha512-s+xf1I46trOY10OqAtZ5Rm6lzHre/UiLA1J2uOhCFXWkbZrJRkYBPO6FhvGfHmdtQ3Bx793MNa7LvoWFAm93bg==
 
 "@supabase/auth-js@2.63.0":
   version "2.63.0"
@@ -1470,7 +1487,7 @@
     "@types/history" "^4.7.11"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.2.25", "@types/react@^18.2.66":
+"@types/react@*", "@types/react@^18.2.25", "@types/react@^18.2.66", "@types/react@>=16.8":
   version "18.2.79"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.79.tgz"
   integrity sha512-RwGAGXPl9kSXwdNTafkOEuFrTBD5SA2B3iEB96xi8+xu5ddUa/cpvyVCSNn+asgLCTHkb5ZxN8gbuibYJi4s1w==
@@ -5144,6 +5161,11 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
+
+slugify@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.npmjs.org/slugify/-/slugify-1.6.6.tgz"
+  integrity sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==
 
 source-map-js@^1.0.1, source-map-js@^1.2.0:
   version "1.2.0"

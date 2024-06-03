@@ -19,13 +19,12 @@ export default class DatabaseService<T> implements ICrud<T> {
 		filters: [],
 		search: undefined,
 	};
-	private readonly supabaseService = new SupabaseService();
 
 	public client: SupabaseClient<Database, 'public', any>;
 
 	public constructor(table: string, options: DatabaseServiceOptions = {}) {
 		this.table = table;
-		this.client = this.supabaseService.client;
+		this.client = SupabaseService.getInstance().client;
 
 		this.tableId = options.tableId ?? 'id';
 	}
