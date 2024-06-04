@@ -1,3 +1,4 @@
+import NotificationComponent from '@components/Notifications/Notifications.component';
 import { lazy, useState } from 'react';
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -35,5 +36,10 @@ export default function Routes(): React.ReactElement {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-	return <RouterProvider router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes} />;
+	return (
+		<>
+			<NotificationComponent />
+			<RouterProvider router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes} />
+		</>
+	);
 }

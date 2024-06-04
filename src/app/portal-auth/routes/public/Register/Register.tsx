@@ -9,13 +9,17 @@ import Button from '@components/form-control/Button';
 import SocialButtonsGroup from '@components/form-control/SocialButtonsGroup';
 import TextField from '@components/form-control/TextField';
 import RegisterHandler from './Register.handler';
+import { addNotification } from '@store/slicers/notification.slicer';
+import { useDispatch } from 'react-redux';
 
 export default function RegisterScreen(): React.ReactElement {
+	const dispatch = useDispatch();
+
 	const socialButton: any = useMemo(
 		() => ({
 			google: {
 				icon: true,
-				onClick: () => console.log('Google'),
+				onClick: () => dispatch(addNotification({ message: `A AB ABC ABCD ABCDE ABCDE ${Date.now()}`, type: 'warning', duration: 3000 })),
 				text: '',
 				color: 'light',
 			},
@@ -26,7 +30,7 @@ export default function RegisterScreen(): React.ReactElement {
 				color: 'primary',
 			},
 		}),
-		[]
+		[dispatch]
 	);
 	const handler = useMemo(() => new RegisterHandler(), []);
 

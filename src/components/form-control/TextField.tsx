@@ -78,7 +78,7 @@ export default function TextField({
 					placeholder={placeholder ?? ''}
 					className={`w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 ${!!prefix && 'pl-11'} ${
 						!!suffix && 'pr-11'
-					} border focus:border-blue-500 focus:bg-white focus:outline-none`}
+					} border border-neutral-300 focus:border-blue-500 focus:bg-white focus:outline-none`}
 					value={value ?? defaultValue}
 					onChange={onChange}
 				/>
