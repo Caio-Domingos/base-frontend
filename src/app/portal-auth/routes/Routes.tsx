@@ -65,7 +65,7 @@ export const routeMappings: AppRoutesMap = {
 		name: 'Master Details',
 		path: ':id',
 		fullPath: '/master/:id',
-		parent: '/master',
+		parent: 'master',
 		element: <MasterDetails />,
 		isPublic: false,
 	},

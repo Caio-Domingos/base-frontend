@@ -16,7 +16,6 @@ export default function NavbarComponent(): React.ReactElement {
 			if (menu.length > 0) return;
 
 			const menuItems = [routeMappings.home, routeMappings.master];
-			console.log('Menu items:', menuItems);
 			setMenu(menuItems);
 		};
 
@@ -24,10 +23,7 @@ export default function NavbarComponent(): React.ReactElement {
 	}, [menu.length]);
 
 	useEffect(() => {
-		console.log('Current location:', location.pathname);
-
 		const privateRoutes = Object.keys(routeMappings).filter((key) => !routeMappings[key].isPublic);
-		console.log('Private routes:', privateRoutes);
 
 		let currentRoute;
 
@@ -48,13 +44,8 @@ export default function NavbarComponent(): React.ReactElement {
 			}
 		}
 
-		console.log('Active route:', currentRoute);
 		setActiveRoute(currentRoute ?? undefined);
 	}, [location]);
-
-	useEffect(() => {
-		console.log('Show large menu:', showLargeMenu);
-	}, [showLargeMenu]);
 
 	const handleLogout = (): void => {
 		// Implementar lógica de logout
@@ -62,7 +53,11 @@ export default function NavbarComponent(): React.ReactElement {
 
 	return (
 		// <nav className='shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out w-40'>
-		<nav className={`shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out ${showLargeMenu ? 'w-40' : 'w-20'}`}>
+		<nav
+			className={`bg-bgLight-dark dark:bg-bgDark-dark shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out ${
+				showLargeMenu ? 'w-40' : 'w-20'
+			}`}
+		>
 			<div id='header' className='w-full h-20 box-border flex items-center justify-center bg-primary px-1'>
 				<CustomImage src='/public/images/logo-white.png' alt='Logo' />
 			</div>
@@ -71,9 +66,7 @@ export default function NavbarComponent(): React.ReactElement {
 					<ul className='w-full'>
 						{menu.map((item, index) => (
 							// eslint-disable-next-line react/no-array-index-key
-							<li key={index} className={`box-border block mx-3 py-2 rounded-md ${item.path === activeRoute?.path ? 'bg-primary' : ''}`}>
-								<MenuItemComponent index={index} showLargeMenu={showLargeMenu} activeRoute={activeRoute} route={item} />
-							</li>
+							<MenuItemComponent key={index} index={index} showLargeMenu={showLargeMenu} activeRoute={activeRoute} route={item} />
 						))}
 					</ul>
 				</div>
@@ -86,16 +79,24 @@ export default function NavbarComponent(): React.ReactElement {
 						{showLargeMenu ? <i className='fa-solid fa-chevron-left' /> : <i className='fa-solid fa-chevron-right' />}
 					</Button>
 					<ul>
-						<MenuItemComponent showLargeMenu={showLargeMenu} activeRoute={activeRoute} nonRoute={{
-							icon: 'fa-solid fa-gears',
-							name: 'Settings',
-							path: '/configurations'
-						}} />
-						<MenuItemComponent showLargeMenu={showLargeMenu} activeRoute={activeRoute} nonRoute={{
-							icon: 'fa-solid fa-user-gear',
-							name: 'Profile',
-							path: '/profile'
-						}} />
+						<MenuItemComponent
+							showLargeMenu={showLargeMenu}
+							activeRoute={activeRoute}
+							nonRoute={{
+								icon: 'fa-solid fa-gears',
+								name: 'Settings',
+								path: '/configurations',
+							}}
+						/>
+						<MenuItemComponent
+							showLargeMenu={showLargeMenu}
+							activeRoute={activeRoute}
+							nonRoute={{
+								icon: 'fa-solid fa-user-gear',
+								name: 'Profile',
+								path: '/profile',
+							}}
+						/>
 
 						<li className='box-border block mx-3 py-2 rounded-md'>
 							<div onClick={handleLogout} className={`w-full px-2 flex items-center justify-center  ${showLargeMenu ? 'gap-4' : 'gap-0'}`}>
