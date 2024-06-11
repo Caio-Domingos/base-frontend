@@ -6,7 +6,7 @@ interface HandlerResponse {
 }
 
 export default class LoginHandler {
-	public loginWithEmailAndPassword(email: string, password: string): HandlerResponse {
+	public async loginWithEmailAndPassword(email: string, password: string): Promise<HandlerResponse> {
 		// Login logic
 		console.log(`Starting loginWithEmailAndPassword...${email} ${password}`);
 		return {

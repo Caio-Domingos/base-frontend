@@ -3,9 +3,31 @@ import CustomImage from '@components/base/Image';
 import Button from '@components/form-control/Button';
 import SocialButtonsGroup from '@components/form-control/SocialButtonsGroup';
 import TextField from '@components/form-control/TextField';
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import LoginHandler from './Login.handler';
+import { useFormik } from 'formik';
 
 export default function LoginScreen(): React.ReactElement {
+	const handler = useMemo(() => new LoginHandler(), []);
+	const form = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		onSubmit: async (values) => {
+			console.log(values);
+			try {
+				const response = await handler.loginWithEmailAndPassword(values.email, values.password);
+				console.log('onSubmit response', response);
+			} catch (error: any) {
+				console.error(error);
+			}
+		},
+		onReset: () => {
+			form.resetForm();
+		},
+	});
+
 	return (
 		<main className='min-h-screen w-screen flex items-center justify-center md:justify-end md:bg-login-bg md:bg-cover'>
 			<section className='bg-bgLight dark:bg-bgDark w-screen min-h-screen md:w-1/4 md:min-w-[400px] flex items-center justify-center'>
@@ -17,15 +39,17 @@ export default function LoginScreen(): React.ReactElement {
 						<CustomImage src='/images/logo-white.png' />
 					</div>
 					<h1 className='text-xl font-bold mt-12'>Entre com a sua conta</h1>
-					<TextField className='mt-2' label='Email' type='email' />
-					<TextField className='mt-2' label='Senha' />
+					<TextField className='mt-2' label='Email' type='email' value={form.values.email} onChange={form.handleChange} />
+					<TextField className='mt-2' label='Senha' password name='password' value={form.values.password} onChange={form.handleChange} />
 					<div className='block text-right mt-2'>
 						<a className='text-sm font-medium text-gray-900 dark:text-white hover:text-primary focus:text-primary' href={`/forgot-password`}>
 							{' '}
 							Esqueci minha senha{' '}
 						</a>
 					</div>
-					<Button>Entrar</Button>
+					<Button onClick={form.handleSubmit} disabled={!form.isValid || !form.dirty}>
+						Criar
+					</Button>
 					<hr className='mt-xl mb-base mx-sm border-neutral-300 dark:border-neutral-700' />
 					<SocialButtonsGroup
 						buttons={{

@@ -19,7 +19,7 @@ export default function RegisterScreen(): React.ReactElement {
 		() => ({
 			google: {
 				icon: true,
-				onClick: () => dispatch(addNotification({ message: `A AB ABC ABCD ABCDE ABCDE ${Date.now()}`, type: 'warning', duration: 3000 })),
+				onClick: () => console.log('Google'),
 				text: '',
 				color: 'light',
 			},
@@ -30,7 +30,7 @@ export default function RegisterScreen(): React.ReactElement {
 				color: 'primary',
 			},
 		}),
-		[dispatch]
+		[]
 	);
 	const handler = useMemo(() => new RegisterHandler(), []);
 
@@ -74,7 +74,7 @@ export default function RegisterScreen(): React.ReactElement {
 					<TextField className='mt-2' label='Nome' name='name' value={form.values.name} onChange={form.handleChange} />
 					<TextField className='mt-2' label='Senha' password name='password' value={form.values.password} onChange={form.handleChange} />
 
-					<Button onClick={form.handleSubmit} disabled={!form.isValid}>
+					<Button onClick={form.handleSubmit} disabled={!form.isValid || !form.dirty}>
 						Criar
 					</Button>
 					<hr className='mt-xl mb-base mx-sm border-neutral-300 dark:border-neutral-700' />
@@ -84,10 +84,10 @@ export default function RegisterScreen(): React.ReactElement {
 					<SocialButtonsGroup buttons={socialButton} />
 					<div className='block text-left mt-base'>
 						<p className='text-sm font-light'>
-							Não tem uma conta?
-							<a className='font-semibold text-primary dark:text-primary hover:text-primary-600 focus:text-primary-600' href='/register'>
+							Já tem uma conta?
+							<a className='font-semibold text-primary dark:text-primary hover:text-primary-600 focus:text-primary-600' href='/'>
 								{' '}
-								Criar agora{' '}
+								Entrar agora{' '}
 							</a>
 						</p>
 					</div>
