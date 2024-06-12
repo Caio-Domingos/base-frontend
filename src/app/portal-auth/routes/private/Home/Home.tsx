@@ -8,12 +8,16 @@ export default function HomeScreen(): React.ReactElement {
 					{ title: 'More 1', icon: 'fa-solid fa-ellipsis-vertical', action: () => console.log('More 1') },
 					{ title: 'More 2', icon: 'fa-solid fa-ellipsis-vertical', action: () => console.log('More 2') },
 				]}
+				title='Title 1'
+				value='90.1M'
 			/>
 			<KpiCardComponent
 				more={[
 					{ title: 'More 1', icon: 'fa-solid fa-ellipsis-vertical', action: () => console.log('More 1') },
 					{ title: 'More 2', icon: 'fa-solid fa-ellipsis-vertical', action: () => console.log('More 2') },
 				]}
+				title='Title 2'
+				value='82.3K'
 			/>
 			<KpiCardComponent />
 			<KpiCardComponent />

@@ -4,12 +4,13 @@ import { type Route, routeMappings } from 'app/portal-auth/routes/Routes';
 import { useEffect, useState } from 'react';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import MenuItemComponent from './base/MenuItem';
+import useAtualRouteMap from 'app/portal-auth/hooks/useAtualRoute.hook';
 
 export default function NavbarComponent(): React.ReactElement {
 	const location = useLocation();
 	const [menu, setMenu] = useState<Route[]>([]);
 	const [showLargeMenu, setShowLargeMenu] = useState(false);
-	const [activeRoute, setActiveRoute] = useState<Route | undefined>();
+	const activeRoute = useAtualRouteMap();
 
 	useEffect(() => {
 		const setMenuItems = (): void => {
@@ -22,33 +23,8 @@ export default function NavbarComponent(): React.ReactElement {
 		setMenuItems();
 	}, [menu.length]);
 
-	useEffect(() => {
-		const privateRoutes = Object.keys(routeMappings).filter((key) => !routeMappings[key].isPublic);
-
-		let currentRoute;
-
-		// Verifique se a rota corresponde exatamente
-		for (const key of privateRoutes) {
-			if (matchPath(routeMappings[key].fullPath, location.pathname)) {
-				// eslint-disable-next-line no-multi-assign
-				currentRoute = routeMappings[key];
-			}
-		}
-
-		// Se não encontrou uma correspondência exata, verifique se é uma sub-rota
-		if (!currentRoute) {
-			for (const key of privateRoutes.filter((routeKey: string) => routeKey !== 'home')) {
-				if (matchPath(`${routeMappings[key].path}/*`, location.pathname)) {
-					currentRoute = routeMappings[key];
-				}
-			}
-		}
-
-		setActiveRoute(currentRoute ?? undefined);
-	}, [location]);
-
 	const handleLogout = (): void => {
-		// Implementar lógica de logout
+		// TODO: Implementar lógica de logout
 	};
 
 	return (
