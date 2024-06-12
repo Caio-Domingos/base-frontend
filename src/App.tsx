@@ -8,6 +8,9 @@ import './App.css';
 import PortalAuthApp from 'app/portal-auth/App';
 import SpaApp from 'app/spa/App';
 
+import 'preline/preline';
+import { useLocation } from 'react-router-dom';
+
 enum AppType {
 	PortalAuth = 'PortalAuth',
 	Spa = 'Spa',
@@ -18,9 +21,7 @@ function App(): React.ReactElement {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [appType, setAppType] = useState<AppType>(AppType.PortalAuth);
-	const [appComponent, setAppComponent] = useState<React.ReactElement | null>(
-		null
-	);
+	const [appComponent, setAppComponent] = useState<React.ReactElement | null>(null);
 
 	useEffect(() => {
 		setAppType(AppType.PortalAuth);
@@ -45,9 +46,7 @@ function App(): React.ReactElement {
 
 	return (
 		<Suspense fallback={<h1>Carregando...</h1>}>
-			<Provider store={store}>
-				{appComponent ?? <h1>Carregando...</h1>}
-			</Provider>
+			<Provider store={store}>{appComponent ?? <h1>Carregando...</h1>}</Provider>
 		</Suspense>
 	);
 }

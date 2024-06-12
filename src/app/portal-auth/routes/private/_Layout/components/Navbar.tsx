@@ -54,7 +54,7 @@ export default function NavbarComponent(): React.ReactElement {
 	return (
 		// <nav className='shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out w-40'>
 		<nav
-			className={`bg-bgLight-dark dark:bg-bgDark-dark shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out ${
+			className={`bg-bgLight-lighter dark:bg-bgDark-darker shadow-lg flex items-center justify-start flex-col transition-all duration-500 ease-out ${
 				showLargeMenu ? 'w-40' : 'w-20'
 			}`}
 		>

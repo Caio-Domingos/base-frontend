@@ -3,11 +3,19 @@ import CustomImage from '@components/base/Image';
 import Button from '@components/form-control/Button';
 import SocialButtonsGroup from '@components/form-control/SocialButtonsGroup';
 import TextField from '@components/form-control/TextField';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import LoginHandler from './Login.handler';
 import { useFormik } from 'formik';
+import { useLocation } from 'react-router-dom';
 
 export default function LoginScreen(): React.ReactElement {
+	const location = useLocation();
+
+	useEffect(() => {
+		window.HSStaticMethods.autoInit();
+	}, [location.pathname]);
+
+
 	const handler = useMemo(() => new LoginHandler(), []);
 	const form = useFormik({
 		initialValues: {

@@ -1,9 +1,16 @@
 import NotificationComponent from '@components/Notifications/Notifications.component';
 import type React from 'react';
-import { lazy, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, useLocation } from 'react-router-dom';
 import LayoutAuthenticated from './private/_Layout/Layout';
+import type { IStaticMethods } from 'preline';
+
+declare global {
+	interface Window {
+		HSStaticMethods: IStaticMethods;
+	}
+}
 
 // Public routes
 const Login = lazy(async () => import('./public/Login/Login'));

@@ -1,25 +1,23 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const defaultConfig = require('tailwindcss/defaultConfig');
-const formsPlugin = require('@tailwindcss/forms');
-const { de } = require('date-fns/locale');
 
 /** @type {import('tailwindcss/types').Config} */
 const config = {
 	darkMode: 'selector',
-	content: ['index.html', 'src/**/*.tsx'],
+	content: ['node_modules/preline/dist/*.js', 'index.html', 'src/**/*.tsx'],
 	theme: {
 		extend: {
 			colors: {
 				bgLight: {
 					DEFAULT: '#F8F8FF',
 					light: '#F8F8FF',
-					dark: '#fffafa',
+					lighter: '#fffafa',
 				},
 				bgDark: {
 					DEFAULT: '#282C35',
 					light: '#282C35',
-					dark: '#0f0f0f',
+					darker: '#0f0f0f',
 				},
 				primary: {
 					DEFAULT: '#0497ff',
@@ -117,13 +115,14 @@ const config = {
 				xl: '2rem',
 			},
 			backgroundImage: {
-				'login-bg': "url('/images/login-bg.jpg')",			}
+				'login-bg': "url('/images/login-bg.jpg')",
+			},
 		},
 		fontFamily: {
 			sans: ['Lato', ...defaultConfig.theme.fontFamily.sans],
 		},
 	},
 	experimental: { optimizeUniversalDefaults: true },
-	plugins: [formsPlugin],
+	plugins: [require('@tailwindcss/forms'), require('preline/plugin')],
 };
 module.exports = config;

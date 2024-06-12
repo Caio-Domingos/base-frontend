@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-handler-names */
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CustomImage from '@components/base/Image';
 import Button from '@components/form-control/Button';
 import SocialButtonsGroup from '@components/form-control/SocialButtonsGroup';
@@ -11,8 +11,15 @@ import TextField from '@components/form-control/TextField';
 import RegisterHandler from './Register.handler';
 import { addNotification } from '@store/slicers/notification.slicer';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export default function RegisterScreen(): React.ReactElement {
+	const location = useLocation();
+
+	useEffect(() => {
+		window.HSStaticMethods.autoInit();
+	}, [location.pathname]);
+
 	const dispatch = useDispatch();
 
 	const socialButton: any = useMemo(
