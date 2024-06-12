@@ -59,7 +59,7 @@ export default function NavbarComponent(): React.ReactElement {
 			}`}
 		>
 			<div id='header' className='w-full h-20 box-border flex items-center justify-center bg-primary px-1'>
-				<CustomImage src='/public/images/logo-white.png' alt='Logo' />
+				<CustomImage src='/images/logo-white.png' alt='Logo' />
 			</div>
 			<div id='menu' className='w-full flex-auto flex flex-col justify-between py-4 items-center'>
 				<div id='top' className='w-full'>
@@ -74,7 +74,7 @@ export default function NavbarComponent(): React.ReactElement {
 					<Button
 						onClick={() => setShowLargeMenu((state) => !state)}
 						color='primary'
-						className='absolute top-[-60px] right-[-20px] w-10 h-10 mt-0 rounded-full'
+						className='absolute top-[-60px] right-[-20px] w-10 h-10 rounded-full mt-0'
 					>
 						{showLargeMenu ? <i className='fa-solid fa-chevron-left' /> : <i className='fa-solid fa-chevron-right' />}
 					</Button>

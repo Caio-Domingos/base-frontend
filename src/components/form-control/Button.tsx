@@ -1,5 +1,7 @@
+/* eslint-disable react/button-has-type */
 import { set } from 'date-fns';
 import { useEffect, useState } from 'react';
+import classNames from 'classnames';
 
 interface ButtonProperties {
 	children: React.ReactNode;
@@ -80,17 +82,11 @@ export default function Button({ children, className, onClick, type, disabled, c
 			}
 		}
 	}, [color]);
+	const baseClasses = 'block font-semibold px-4 py-3 flex items-center justify-center gap-3';
+	const combinedClasses = `${baseClasses} ${bgColor} ${textColor} ${disabled ? disabledColor : ''} ${className ?? ''}`;
 
 	return (
-		<button
-			className={`w-full block ${bgColor} ${textColor} ${disabled ? disabledColor : ''} font-semibold rounded-lg px-4 py-3 mt-6 ${
-				className ?? ''
-			} flex items-center justify-center gap-3`}
-			onClick={onClick}
-			// eslint-disable-next-line react/button-has-type
-			type={type ?? 'button'}
-			disabled={disabled}
-		>
+		<button className={combinedClasses} onClick={onClick} type={type ?? 'button'} disabled={disabled}>
 			{children}
 		</button>
 	);
