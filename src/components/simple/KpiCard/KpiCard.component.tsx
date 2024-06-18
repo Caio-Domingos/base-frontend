@@ -81,10 +81,9 @@ export default function KpiCardComponent({ size, title, value, more, className }
 	const defaultClasses =
 		'p-4 m-2 min-h-44 rounded-3xl bg-bgLight-lighter dark:bg-bgDark-darker text-light dark:text-dark shadow-2xl flex flex-col items-center justify-between';
 	const dynamicClasses = classNames(defaultClasses, {
-		'w-[25%] min-w-52': size === 'small',
-		'w-[45%] min-w-80': size === 'medium',
-		'w-[90%]': size === 'large',
-		'flex-auto min-w-48': !size,
+		'flex-auto md:flex-none md:min-w-52 md:w-[25%]': size === 'small',
+		'flex-auto md:flex-none md:w-[45%] md:min-w-80': size === 'medium',
+		'flex-auto min-w-[90%]': !size || size === 'large',
 	});
 
 	return (
