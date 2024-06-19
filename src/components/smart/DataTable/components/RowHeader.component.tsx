@@ -43,9 +43,6 @@ export default function RowHeaderComponent({ column, onSort, sort }: RowHeaderPr
 			setInternSort({ ...(sort.columnsSort[column.id] ?? { column: column.id, direction: 'none' }), status: false });
 		}
 	}, [sort]);
-	useEffect(() => {
-		console.log(`intern sort => ${column.label}`, internSort);
-	}, [internSort]);
 
 	if (!sort) {
 		return (

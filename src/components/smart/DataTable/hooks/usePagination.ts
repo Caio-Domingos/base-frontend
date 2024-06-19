@@ -1,3 +1,4 @@
+import { set } from 'date-fns';
 import { useState } from 'react';
 
 interface Pagination {
@@ -13,7 +14,9 @@ const usePagination = (
 	pagination: Pagination;
 	onPageChange: (newPage: number) => void;
 	onPageSizeChange: (newSize: number) => void;
+	onTotalItemsChange: (newTotalItems: number) => void;
 } => {
+
 	const totalPages = Math.ceil(totalItems / initialPageSize);
 	const [pagination, setPagination] = useState<Pagination>({
 		currentPage: 1,
@@ -30,10 +33,16 @@ const usePagination = (
 		setPagination((prev) => ({ ...prev, pageSize: newSize, totalPages: newTotalPages, currentPage: 1 }));
 	};
 
+	const onTotalItemsChange = (newTotalItems: number): void => {
+		const newTotalPages = Math.ceil(newTotalItems / pagination.pageSize);
+		setPagination((prev) => ({ ...prev, totalPages: newTotalPages }));
+	};
+
 	return {
 		pagination,
 		onPageChange,
 		onPageSizeChange,
+		onTotalItemsChange
 	};
 };
 

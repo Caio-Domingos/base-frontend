@@ -31,8 +31,6 @@ export default function PaginationComponent({
 	});
 
 	useEffect(() => {
-		console.log('currentPage', currentPage);
-		console.log('totalPages', totalPages);
 		const maxButtons = paginationConfig.maxButtons ?? 5;
 		const sideButtons = paginationConfig.sideButtons ?? 2;
 
@@ -43,8 +41,6 @@ export default function PaginationComponent({
 			// If false, show totalPages buttons
 
 			buttons = totalPages > maxButtons ? Array.from({ length: maxButtons }, (_, i) => i + 1) : Array.from({ length: totalPages }, (_, i) => i + 1);
-
-			console.log('First page', buttons);
 		} else if (currentPage === totalPages) {
 			// Check if totalPages > 5
 			// If true, show 5 buttons
@@ -54,8 +50,6 @@ export default function PaginationComponent({
 				totalPages > maxButtons
 					? Array.from({ length: maxButtons }, (_, i) => totalPages - maxButtons + i + 1)
 					: Array.from({ length: totalPages }, (_, i) => totalPages - totalPages + i + 1);
-
-			console.log('Last page', buttons);
 		} else {
 			// Discover if the current page have 2 or more pages before it
 			const hasTwoPagesBefore = currentPage - sideButtons > 1;
@@ -73,7 +67,6 @@ export default function PaginationComponent({
 			} else if (currentPage === totalPages - 1 && (buttons as any).at(0) > 1) {
 				buttons = [(buttons as any).at(0) - 1, ...buttons];
 			}
-			console.log('Middle page', buttons);
 		}
 		setPaginationConfig((state: any) => ({ ...state, buttons }));
 	}, [currentPage, totalPages, pageSize, paginationConfig.maxButtons, paginationConfig.sideButtons]);

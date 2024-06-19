@@ -11,6 +11,7 @@ import CellBulkSelectionComponent from './components/CellBulkSelection.component
 import CellSelectionComponent from './components/CellSelection.component';
 import PaginationComponent from './components/Pagination.component';
 import usePagination from './hooks/usePagination';
+import { UtilsHandler } from 'features/handlers/utils.handler';
 
 export interface Column {
 	id: string;
@@ -44,10 +45,15 @@ interface DataTableBaseProps<T> {
 	changeSelection?: (selection: Selection) => void;
 
 	// Sorting
-	hasSorting?: boolean;
 
 	// Pagination
-	totalItems: number;
+	paginationConfig: {
+		totalItems?: number;
+		pageSize?: number;
+	};
+
+	// Change State
+	onChangeState?: (state: any) => void;
 }
 
 type DataTableComponentProps<T> = DataTableBaseProps<T>;
@@ -56,17 +62,34 @@ export default function DataTableComponent<T extends HasId>({
 	columns = [],
 	data = [],
 	hasSelection,
-	hasSorting,
-	totalItems,
+	paginationConfig = {
+		totalItems: 0,
+		pageSize: 10,
+	},
 	rowActions = [],
 	tableActions = [],
 	changeSelection,
+	onChangeState,
 }: DataTableComponentProps<T>): ReactElement {
 	const [displayedColumns, setDisplayedColumns] = useState<Column[]>([]);
 	const { selection, onChangeItemSelection, onChangeBulkSelection, setSelection } = useSelection();
 	const [sort, setSort] = useState<SortConfig>();
 	const [search, setSearch] = useState<string>('');
-	const { pagination, onPageChange, onPageSizeChange } = usePagination(10, totalItems);
+	const { pagination, onPageChange, onPageSizeChange, onTotalItemsChange } = usePagination(
+		paginationConfig.pageSize ?? 10,
+		paginationConfig.totalItems ?? 0
+	);
+
+	const [dataTableState, setDataTableState] = useState({
+		selection,
+		pagination,
+		sort,
+		search,
+	});
+
+	const changeDataTableState = (newState: any): void => {
+		setDataTableState(newState);
+	};
 
 	useEffect(() => {
 		setDisplayedColumns(columns.filter((column) => column.visible));
@@ -74,20 +97,37 @@ export default function DataTableComponent<T extends HasId>({
 	useEffect(() => {
 		setSort({
 			atualSort: { column: columns[0].id, direction: 'none' },
-			columnsSort: Object.fromEntries(columns.map(( column) => [column.id, { column: column.id, direction: 'none' }])),
+			columnsSort: Object.fromEntries(columns.map((column) => [column.id, { column: column.id, direction: 'none' }])),
 		});
 	}, [displayedColumns]);
-
 	useEffect(() => {
 		if (hasSelection && changeSelection) changeSelection(selection);
 	}, [hasSelection, changeSelection, selection]);
+	useEffect(() => {
+		onPageSizeChange(paginationConfig.pageSize ?? 10);
+	}, [paginationConfig.pageSize]);
+	useEffect(() => {
+		onTotalItemsChange(paginationConfig.totalItems ?? 100);
+	}, [paginationConfig.totalItems]);
 
 	useEffect(() => {
-		console.log('Pagination changed!', pagination);
-	}, [pagination]);
-	useEffect(() => {
-		console.log('Sort changed!', sort);
-	}, [sort]);
+		const newDataState = {
+			selection,
+			pagination,
+			sort,
+			search,
+		};
+
+		const compareState = UtilsHandler.getDeepDifferences(dataTableState, newDataState);
+		console.log('my compare', compareState);
+		console.log('my compare', Object.keys(compareState).length > 0);
+
+		if (Object.keys(compareState).length > 0) {
+			console.log('my compare has changes', compareState);
+			changeDataTableState(newDataState);
+			if (onChangeState) onChangeState(newDataState);
+		}
+	}, [pagination, sort, selection, search]);
 
 	const handleChangeBulkSelection = (el: React.ChangeEvent<HTMLInputElement>): void => {
 		onChangeBulkSelection(el.target.checked);
@@ -169,13 +209,20 @@ export default function DataTableComponent<T extends HasId>({
 								</table>
 							</div>
 							<div className='py-1 px-4'>
-								<PaginationComponent
-									currentPage={pagination.currentPage}
-									totalPages={pagination.totalPages}
-									onPageChange={onPageChange}
-									onPageSizeChange={onPageSizeChange}
-									pageSize={pagination.pageSize}
-								/>
+								{paginationConfig.totalItems &&
+								paginationConfig.pageSize &&
+								paginationConfig.totalItems > 0 &&
+								paginationConfig.totalItems > paginationConfig.pageSize ? (
+									<PaginationComponent
+										currentPage={pagination.currentPage}
+										totalPages={pagination.totalPages}
+										onPageChange={onPageChange}
+										onPageSizeChange={onPageSizeChange}
+										pageSize={pagination.pageSize}
+									/>
+								) : (
+									''
+								)}
 							</div>
 						</div>
 					</div>

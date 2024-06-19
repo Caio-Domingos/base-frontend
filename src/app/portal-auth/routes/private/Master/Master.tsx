@@ -16,7 +16,7 @@ export default function MasterScreen(): React.ReactElement {
 				<DataTableComponent
 					columns={[
 						{ id: 'id', label: 'ID', visible: true, canSorted: true },
-						{ id: 'name', label: 'Name', visible: true, canSorted: true},
+						{ id: 'name', label: 'Name', visible: true, canSorted: true },
 						{ id: 'email', label: 'Email', visible: true },
 						{ id: 'updated_at', label: 'Updated At', visible: true },
 					]}
@@ -26,7 +26,13 @@ export default function MasterScreen(): React.ReactElement {
 						{ id: 3, name: 'John Smith', email: 'email@email.com', updated_at: '2021-10-10' },
 						{ id: 4, name: 'Jane Smith', email: 'email@email.com', updated_at: '2021-10-10' },
 					]}
-					totalItems={250}
+					paginationConfig={{
+						pageSize: 10,
+						totalItems: 100,
+					}}
+					onChangeState={(state) => {
+						console.log('Date State', state);
+					}}
 				/>
 			</div>
 		</div>
