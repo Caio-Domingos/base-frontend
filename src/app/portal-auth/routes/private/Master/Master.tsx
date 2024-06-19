@@ -16,7 +16,7 @@ export default function MasterScreen(): React.ReactElement {
 				<DataTableComponent
 					columns={[
 						{ id: 'id', label: 'ID', visible: true, canSorted: true },
-						{ id: 'name', label: 'Name', visible: true },
+						{ id: 'name', label: 'Name', visible: true, canSorted: true},
 						{ id: 'email', label: 'Email', visible: true },
 						{ id: 'updated_at', label: 'Updated At', visible: true },
 					]}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/no-object-type-as-default-prop */
@@ -25,6 +26,11 @@ interface Selection {
 	type: 'all' | 'none' | 'some-all' | 'some-none';
 	selected?: any[];
 	unselected?: any[];
+}
+
+export interface SortConfig {
+	atualSort: Sort;
+	columnsSort: Record<string, Sort>;
 }
 
 interface DataTableBaseProps<T> {
@@ -58,13 +64,19 @@ export default function DataTableComponent<T extends HasId>({
 }: DataTableComponentProps<T>): ReactElement {
 	const [displayedColumns, setDisplayedColumns] = useState<Column[]>([]);
 	const { selection, onChangeItemSelection, onChangeBulkSelection, setSelection } = useSelection();
-	const [sort, setSort] = useState<Sort>({ column: '', direction: 'none' });
+	const [sort, setSort] = useState<SortConfig>();
 	const [search, setSearch] = useState<string>('');
 	const { pagination, onPageChange, onPageSizeChange } = usePagination(10, totalItems);
 
 	useEffect(() => {
 		setDisplayedColumns(columns.filter((column) => column.visible));
 	}, [columns]);
+	useEffect(() => {
+		setSort({
+			atualSort: { column: columns[0].id, direction: 'none' },
+			columnsSort: Object.fromEntries(columns.map(( column) => [column.id, { column: column.id, direction: 'none' }])),
+		});
+	}, [displayedColumns]);
 
 	useEffect(() => {
 		if (hasSelection && changeSelection) changeSelection(selection);
@@ -73,6 +85,9 @@ export default function DataTableComponent<T extends HasId>({
 	useEffect(() => {
 		console.log('Pagination changed!', pagination);
 	}, [pagination]);
+	useEffect(() => {
+		console.log('Sort changed!', sort);
+	}, [sort]);
 
 	const handleChangeBulkSelection = (el: React.ChangeEvent<HTMLInputElement>): void => {
 		onChangeBulkSelection(el.target.checked);
@@ -82,8 +97,13 @@ export default function DataTableComponent<T extends HasId>({
 	};
 
 	const handleOnSort = (column: Column, newSort: Sort): void => {
-		console.log('Sort changed!', column, newSort);
-		setSort(newSort);
+		setSort((state: any) => ({
+			atualSort: newSort,
+			columnsSort: {
+				...state.columnsSort,
+				[column.id]: newSort,
+			},
+		}));
 	};
 
 	return (
@@ -110,7 +130,7 @@ export default function DataTableComponent<T extends HasId>({
 										<tr>
 											{hasSelection ? <CellBulkSelectionComponent onChange={handleChangeBulkSelection} /> : ''}
 											{displayedColumns.map((column, index) => (
-												<RowHeaderComponent key={index} column={column} onSort={handleOnSort} />
+												<RowHeaderComponent key={index} column={column} onSort={handleOnSort} sort={sort} />
 											))}
 											{rowActions.length > 0 ? (
 												<th scope='col' className='px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500'>
