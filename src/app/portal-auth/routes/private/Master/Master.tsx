@@ -26,6 +26,26 @@ export default function MasterScreen(): React.ReactElement {
 						{ id: 3, name: 'John Smith', email: 'email@email.com', updated_at: '2021-10-10' },
 						{ id: 4, name: 'Jane Smith', email: 'email@email.com', updated_at: '2021-10-10' },
 					]}
+					rowActions={[
+						{
+							id: 'EDIT',
+							name: 'fa-solid fa-pen',
+							isIcon: true,
+							color: 'warning',
+							action: (id: string, context: any): void => {
+								console.log('Delete', id, context);
+							},
+						},
+						{
+							id: 'DELETE',
+							name: 'fa-solid fa-trash',
+							isIcon: true,
+							color: 'danger',
+							action: (id: string, context: any): void => {
+								console.log('Delete', id, context);
+							},
+						},
+					]}
 					paginationConfig={{
 						pageSize: 10,
 						totalItems: 100,

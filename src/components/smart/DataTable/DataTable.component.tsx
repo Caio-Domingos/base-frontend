@@ -10,8 +10,9 @@ import RowHeaderComponent, { type Sort } from './components/RowHeader.component'
 import CellBulkSelectionComponent from './components/CellBulkSelection.component';
 import CellSelectionComponent from './components/CellSelection.component';
 import PaginationComponent from './components/Pagination.component';
-import usePagination from './hooks/usePagination';
+import usePagination from './hooks/usePagination.hook';
 import { UtilsHandler } from 'features/handlers/utils.handler';
+import RowActionButton from './components/RowActionButton.component';
 
 export interface Column {
 	id: string;
@@ -32,6 +33,14 @@ interface Selection {
 export interface SortConfig {
 	atualSort: Sort;
 	columnsSort: Record<string, Sort>;
+}
+
+export interface RowAction {
+	id: string;
+	name: string;
+	isIcon?: boolean;
+	color?: 'danger' | 'dark' | 'info' | 'light' | 'primary' | 'secondary' | 'success' | 'tertiary' | 'warning';
+	action: (id: string, context: any) => void;
 }
 
 interface DataTableBaseProps<T> {
@@ -117,13 +126,9 @@ export default function DataTableComponent<T extends HasId>({
 			sort,
 			search,
 		};
-
 		const compareState = UtilsHandler.getDeepDifferences(dataTableState, newDataState);
-		console.log('my compare', compareState);
-		console.log('my compare', Object.keys(compareState).length > 0);
 
 		if (Object.keys(compareState).length > 0) {
-			console.log('my compare has changes', compareState);
 			changeDataTableState(newDataState);
 			if (onChangeState) onChangeState(newDataState);
 		}
@@ -192,13 +197,10 @@ export default function DataTableComponent<T extends HasId>({
 												))}
 
 												{rowActions.length > 0 ? (
-													<td className='px-6 py-4 whitespace-nowrap text-end text-sm font-medium'>
-														<button
-															type='button'
-															className='inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400'
-														>
-															Delete
-														</button>
+													<td className='px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex items-center justify-end gap-6'>
+														{rowActions.map((action, actionIndex) => (
+															<RowActionButton key={actionIndex} action={action} context={d} />
+														))}
 													</td>
 												) : (
 													''
