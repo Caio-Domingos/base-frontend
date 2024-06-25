@@ -1,9 +1,28 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import Button from '@components/form-control/Button';
 import TextField from '@components/form-control/TextField';
 import KpiCardComponent from '@components/simple/KpiCard/KpiCard.component';
 import DataTableComponent from '@components/smart/DataTable/DataTable.component';
+import useDebounce from 'app/portal-auth/hooks/useDebounce.hook';
+import { useEffect, useState } from 'react';
 
 export default function MasterScreen(): React.ReactElement {
+	const [tableState, setTableState] = useState();
+	const debouncedTableState = useDebounce(tableState, 300);
+
+	const updateData = async (state: any): Promise<void> => {
+		console.log('Fetching data with state:', state);
+		// Chame a função getAll aqui com os parâmetros necessários
+		// const data = await getAll(state);
+		// Atualize o estado da tabela com os novos dados
+	};
+	useEffect(() => {
+		if (debouncedTableState) {
+			updateData(debouncedTableState);
+		}
+	}, [debouncedTableState]);
+
 	return (
 		<div className='w-full flex flex-col items-center justify-start p-4'>
 			<h1 className='text-2xl font-semibold w-full text-left mb-4'>Master</h1>
@@ -51,7 +70,7 @@ export default function MasterScreen(): React.ReactElement {
 						totalItems: 100,
 					}}
 					onChangeState={(state) => {
-						console.log('Date State', state);
+						setTableState(state);
 					}}
 				/>
 			</div>

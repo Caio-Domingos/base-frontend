@@ -4,7 +4,7 @@ import type { UserInsert, UserRow } from './base/database.interface';
 
 export default class UserService extends DatabaseService<User> {
 	public constructor() {
-		super('user');
+		super('users');
 	}
 
 	public async registerWithEmailPassword(name: string, email: string, password: string): Promise<User> {

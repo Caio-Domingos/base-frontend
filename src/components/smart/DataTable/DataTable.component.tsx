@@ -101,7 +101,8 @@ export default function DataTableComponent<T extends HasId>({
 	};
 
 	useEffect(() => {
-		setDisplayedColumns(columns.filter((column) => column.visible));
+		const compareState = UtilsHandler.getDeepDifferences(displayedColumns, columns);
+		if (Object.keys(compareState).length > 0) setDisplayedColumns(columns.filter((column) => column.visible));
 	}, [columns]);
 	useEffect(() => {
 		setSort({
