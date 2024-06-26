@@ -1,3 +1,5 @@
+/* eslint-disable no-extra-boolean-cast */
+/* eslint-disable no-promise-executor-return */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -9,10 +11,11 @@ import type { GetOptions } from 'api/supabase/base/database.service';
 import UserService from 'api/supabase/user.service';
 import useGetOptions, { type FilterConfig } from 'app/portal-auth/hooks/supabase/useGetOptions.hook';
 import useDebounce from 'app/portal-auth/hooks/useDebounce.hook';
+import { UtilsHandler } from 'features/handlers/utils.handler';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function MasterScreen(): React.ReactElement {
-	const [tableState, setTableState] = useState();
+	const [tableState, setTableState] = useState<DataTableState>();
 	const debouncedTableState: any = useDebounce(tableState, 300);
 	const [data, setData] = useState<{
 		data: User[];
@@ -43,6 +46,7 @@ export default function MasterScreen(): React.ReactElement {
 
 		setLoading(true);
 		try {
+			// await UtilsHandler.promiseTimer(3_000_000);
 			const res = await us.getAll(getOptions);
 
 			console.log('Data:', res);
@@ -76,6 +80,7 @@ export default function MasterScreen(): React.ReactElement {
 						{ id: 'updated_at', label: 'Updated At', visible: true },
 					]}
 					data={data.data}
+					loading={loading}
 					rowActions={[
 						{
 							id: 'EDIT',
@@ -96,12 +101,33 @@ export default function MasterScreen(): React.ReactElement {
 							},
 						},
 					]}
+					tableActions={[
+						{
+							id: 'ADD',
+							icon: 'fa-solid fa-add',
+							name: 'Novo',
+							color: 'warning',
+							action: (): void => {
+								console.log('Add');
+							},
+						},
+					]}
 					paginationConfig={{
 						pageSize: 10,
 						totalItems: data.count,
 					}}
 					onChangeState={(state) => {
-						setTableState(state);
+						if (!tableState) {
+							setTableState(state);
+							return;
+						}
+
+						const diff = UtilsHandler.getDeepDifferences(tableState, state);
+						delete diff['pagination.totalPages'];
+						if (Object.keys(diff).length > 0) setTableState(state);
+					}}
+					onChangeSelection={(selection) => {
+						console.log('Selection:', selection);
 					}}
 				/>
 			</div>

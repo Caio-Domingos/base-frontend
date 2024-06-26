@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-key */
@@ -50,7 +51,7 @@ interface DataTableBaseProps<T> {
 	rowActions?: any[];
 
 	// Selection
-	hasSelection?: true;
+	hasSelection?: boolean;
 	changeSelection?: (selection: Selection) => void;
 
 	// Sorting
@@ -61,14 +62,16 @@ interface DataTableBaseProps<T> {
 		pageSize?: number;
 	};
 
+	loading?: boolean;
+
 	// Change State
 	onChangeState?: (state: any) => void;
+	onChangeSelection?: (selection: Selection) => void;
 }
 
 type DataTableComponentProps<T> = DataTableBaseProps<T>;
 
 export interface DataTableState {
-	selection: Selection;
 	pagination: Pagination;
 	sort: SortConfig | undefined;
 	search: string;
@@ -84,8 +87,10 @@ export default function DataTableComponent<T extends HasId>({
 	},
 	rowActions = [],
 	tableActions = [],
+	loading,
 	changeSelection,
 	onChangeState,
+	onChangeSelection,
 }: DataTableComponentProps<T>): ReactElement {
 	const [displayedColumns, setDisplayedColumns] = useState<Column[]>([]);
 	const { selection, onChangeItemSelection, onChangeBulkSelection, setSelection } = useSelection();
@@ -97,7 +102,6 @@ export default function DataTableComponent<T extends HasId>({
 	);
 
 	const [dataTableState, setDataTableState] = useState<DataTableState>({
-		selection,
 		pagination,
 		sort,
 		search,
@@ -129,7 +133,6 @@ export default function DataTableComponent<T extends HasId>({
 
 	useEffect(() => {
 		const newDataState = {
-			selection,
 			pagination,
 			sort,
 			search,
@@ -140,7 +143,11 @@ export default function DataTableComponent<T extends HasId>({
 			changeDataTableState(newDataState);
 			if (onChangeState) onChangeState(newDataState);
 		}
-	}, [pagination, sort, selection, search]);
+	}, [pagination, sort, search]);
+
+	useEffect(() => {
+		if (onChangeSelection) onChangeSelection(selection);
+	}, [selection]);
 
 	const handleChangeBulkSelection = (el: React.ChangeEvent<HTMLInputElement>): void => {
 		onChangeBulkSelection(el.target.checked);
@@ -162,13 +169,14 @@ export default function DataTableComponent<T extends HasId>({
 	return (
 		<>
 			<div id='search-filters' className='flex items-end justify-between w-full flex-wrap'>
-				<div className='w-full md:w-1/3 max-w-[350px] mb-4' id='search'>
+				<div className='w-full md:w-1/3 max-w-[350px]' id='search'>
 					<TextField label='Search' prefix={{ icon: 'fa-solid fa-search' }} value={search} onChange={(e) => setSearch(e.target.value)} />
 				</div>
-				<div className='w-full md:w-auto' id='data-actions'>
-					{tableActions.map((action) => (
-						<Button className='w-full md:w-auto rounded-lg' onClick={action.action}>
+				<div className='w-full md:w-auto flex items-center justify-end gap-4' id='data-actions'>
+					{tableActions.map((action, bindex) => (
+						<Button key={bindex} className='w-full md:w-auto rounded-lg flex items-center justify-center gap-4' onClick={action.action}>
 							{action.name}
+							{action.icon ? <i className={action.icon} /> : ''}
 						</Button>
 					))}
 				</div>
@@ -194,32 +202,48 @@ export default function DataTableComponent<T extends HasId>({
 											)}
 										</tr>
 									</thead>
-									<tbody className='divide-y divide-gray-200 dark:divide-neutral-700'>
-										{data.map((d, index) => (
-											<tr key={index}>
-												{hasSelection ? <CellSelectionComponent data={d} onChange={handleChangeItemSelection} /> : ''}
-												{displayedColumns.map((column, indexColumn) => (
-													<td key={column.id} className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200'>
-														{(d as any)[column.id]}
-													</td>
-												))}
-
-												{rowActions.length > 0 ? (
-													<td className='px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex items-center justify-end gap-6'>
-														{rowActions.map((action, actionIndex) => (
-															<RowActionButton key={actionIndex} action={action} context={d} />
-														))}
-													</td>
-												) : (
-													''
-												)}
+									<tbody className='relative divide-y divide-gray-200 dark:divide-neutral-700'>
+										{loading ? (
+											<tr className='px-6 py-4 h-52  whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200'>
+												<div className='absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center'>Loading...</div>
 											</tr>
-										))}
+										) : data.length > 0 ? (
+											data.map((d, index) => (
+												<tr key={index}>
+													{hasSelection ? <CellSelectionComponent data={d} onChange={handleChangeItemSelection} /> : ''}
+													{displayedColumns.map((column, indexColumn) => (
+														<td key={column.id} className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200'>
+															{(d as any)[column.id]}
+														</td>
+													))}
+
+													{rowActions.length > 0 ? (
+														<td className='px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex items-center justify-end gap-6'>
+															{rowActions.map((action, actionIndex) => (
+																<RowActionButton key={actionIndex} action={action} context={d} />
+															))}
+														</td>
+													) : (
+														''
+													)}
+												</tr>
+											))
+										) : (
+											<tr>
+												<td
+													colSpan={displayedColumns.length + 1}
+													className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200'
+												>
+													No data found
+												</td>
+											</tr>
+										)}
 									</tbody>
 								</table>
 							</div>
-							<div className='py-1 px-4'>
-								{paginationConfig.totalItems &&
+							<div className={!loading ? 'py-1 px-4' : ''}>
+								{!loading &&
+								paginationConfig.totalItems &&
 								paginationConfig.pageSize &&
 								paginationConfig.totalItems > 0 &&
 								paginationConfig.totalItems > paginationConfig.pageSize ? (

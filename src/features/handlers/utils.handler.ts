@@ -50,4 +50,10 @@ export const UtilsHandler = {
 
 		return changes;
 	},
+
+	async promiseTimer(timer?: number): Promise<void> {
+		return new Promise((resolve) => {
+			setTimeout(resolve, timer ?? 3000);
+		});
+	},
 };
