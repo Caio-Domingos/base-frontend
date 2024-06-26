@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 /* eslint-disable unicorn/no-null */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -31,46 +32,80 @@ export default class DatabaseService<T> implements ICrud<T> {
 
 	private getPagination(page: number, size: number): Pagination {
 		const limit = size ? Number(size) : 3;
-		const from = page ? page * limit : 0;
+		const from = page ? (page - 1) * limit : 0;
 		const to = page ? from + size - 1 : size - 1;
 		return { from, to };
 	}
 
 	private getFilter(query: any, filter: Filter): any {
-		let returnValue = query;
 		if (filter.value !== null) {
 			switch (filter.operator) {
 				case 'contains': {
-					returnValue = query.ilike(filter.column, `%${filter.value}%`);
-					break;
+					return query.ilike(filter.column, `%${filter.value}%`);
 				}
 				case 'startswith': {
-					returnValue = query.ilike(filter.column, `${filter.value}%`);
-					break;
+					return query.ilike(filter.column, `${filter.value}%`);
 				}
 				case 'endswith': {
-					returnValue = query.ilike(filter.column, `%${filter.value}`);
-					break;
+					return query.ilike(filter.column, `%${filter.value}`);
 				}
-
 				case 'empty': {
-					returnValue = query.eq(filter.column, null);
-					break;
+					return query.eq(filter.column, null);
 				}
-
 				case 'eq': {
-					returnValue = query.eq(filter.column, filter.value);
-					break;
+					return query.eq(filter.column, filter.value);
 				}
-
 				default: {
-					return returnValue;
+					return query;
 				}
 			}
-
-			return returnValue;
 		}
-		return returnValue;
+		return query;
+	}
+
+	private getFilterString(filter: Filter): string {
+		if (filter.value !== null) {
+			switch (filter.operator) {
+				case 'contains': {
+					return `${filter.column}.ilike.%${filter.value}%`;
+				}
+				case 'startswith': {
+					return `${filter.column}.ilike.${filter.value}%`;
+				}
+				case 'endswith': {
+					return `${filter.column}.ilike.%${filter.value}`;
+				}
+				case 'empty': {
+					return `${filter.column}.is.null`;
+				}
+				case 'eq': {
+					return `${filter.column}.eq.${filter.value}`;
+				}
+				default: {
+					return '';
+				}
+			}
+		}
+		return '';
+	}
+
+	private applyFilters(query: any, filters: FilterGroup[]): any {
+		for (const group of filters) {
+			if (group.type === 'and') {
+				for (const filter of group.filters) {
+					query = this.getFilter(query, filter);
+				}
+			} else if (group.type === 'or') {
+				const orFilters = group.filters
+					.map((filter) => this.getFilterString(filter))
+					.filter((filterString) => filterString.length > 0)
+					.join(',');
+				if (orFilters) {
+					query = query.or(orFilters);
+				}
+			}
+		}
+		return query;
 	}
 
 	public async get(id: string): Promise<T> {
@@ -80,7 +115,12 @@ export default class DatabaseService<T> implements ICrud<T> {
 		return data;
 	}
 
-	public async getAll(options: GetOptions = this.getOptionsDefault): Promise<T[]> {
+	public async getAll(options: GetOptions = this.getOptionsDefault): Promise<{
+		data: T[];
+		count: number;
+	}> {
+		const countQuery = this.client.from(this.table).select('*', { count: 'exact', head: true });
+
 		let query = this.client.from(this.table).select('*', { count: 'estimated' });
 
 		// Pagination
@@ -97,18 +137,20 @@ export default class DatabaseService<T> implements ICrud<T> {
 		}
 
 		if (options.filters.length > 0) {
-			for (const filter of options.filters) {
-				query = this.getFilter(query, filter);
-			}
-		}
+			query = this.applyFilters(query, options.filters);
+		  }
 
 		if (options.search) {
-			query = query.textSearch(options.search.column ?? this.tableId, options.search.value ?? '');
+			// TODO: Implement search
 		}
 
 		const { data, error } = await query;
+		const { count } = await countQuery;
 		if (error) throw new Error(error.message);
-		return data;
+		return {
+			data,
+			count: count ?? 0,
+		};
 	}
 
 	public async create(t: Partial<T>): Promise<Partial<T>> {
@@ -150,6 +192,11 @@ interface Pagination {
 	to: number;
 }
 
+interface FilterGroup {
+	type: 'and' | 'or';
+	filters: Filter[];
+}
+
 interface Filter {
 	column: string;
 	operator: 'contains' | 'empty' | 'endswith' | 'eq' | 'gt' | 'gte' | 'ilike' | 'lt' | 'lte' | 'neq' | 'startswith';
@@ -173,7 +220,7 @@ export interface GetOptions {
 		size: number;
 	};
 	sort: Sort[];
-	filters: Filter[];
+	filters: FilterGroup[];
 	search?: SearchText;
 }
 

@@ -12,9 +12,9 @@ export default function LayoutAuthenticated(): React.ReactElement {
 	}, [location.pathname]);
 
 	return (
-		<main className='h-screen w-screen flex'>
+		<main className='min-h-screen w-screen flex'>
 			<NavbarComponent />
-			<section id='main' className='flex-auto h-screen flex flex-col'>
+			<section id='main' className='flex-auto min-h-screen flex flex-col'>
 				<HeaderComponent />
 
 				<div id='content' className='flex-auto'>

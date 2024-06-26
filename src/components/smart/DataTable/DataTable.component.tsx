@@ -10,7 +10,7 @@ import RowHeaderComponent, { type Sort } from './components/RowHeader.component'
 import CellBulkSelectionComponent from './components/CellBulkSelection.component';
 import CellSelectionComponent from './components/CellSelection.component';
 import PaginationComponent from './components/Pagination.component';
-import usePagination from './hooks/usePagination.hook';
+import usePagination, { type Pagination } from './hooks/usePagination.hook';
 import { UtilsHandler } from 'features/handlers/utils.handler';
 import RowActionButton from './components/RowActionButton.component';
 
@@ -67,6 +67,13 @@ interface DataTableBaseProps<T> {
 
 type DataTableComponentProps<T> = DataTableBaseProps<T>;
 
+export interface DataTableState {
+	selection: Selection;
+	pagination: Pagination;
+	sort: SortConfig | undefined;
+	search: string;
+}
+
 export default function DataTableComponent<T extends HasId>({
 	columns = [],
 	data = [],
@@ -89,7 +96,7 @@ export default function DataTableComponent<T extends HasId>({
 		paginationConfig.totalItems ?? 0
 	);
 
-	const [dataTableState, setDataTableState] = useState({
+	const [dataTableState, setDataTableState] = useState<DataTableState>({
 		selection,
 		pagination,
 		sort,

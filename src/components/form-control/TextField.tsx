@@ -57,8 +57,8 @@ export default function TextField({
 		<div className={className ?? ''}>
 			<label className='block text-gray-900 dark:text-white'>{label}</label>
 			<div className='relative w-full box-border'>
-				{!!prefix && <i className={`absolute right-4 bottom-[1.1rem] ${prefix.icon}`} />}
-				{!!suffix && <i className={`absolute left-4 bottom-[1.1rem] ${suffix.icon}`} />}
+				{!!prefix && <i className={`absolute left-4 bottom-[1.1rem] ${prefix.icon}`} />}
+				{!!suffix && <i className={`absolute right-4 bottom-[1.1rem] ${suffix.icon}`} />}
 				{!!password && (
 					<>
 						<i
@@ -78,7 +78,7 @@ export default function TextField({
 					placeholder={placeholder ?? ''}
 					className={`w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-800 border border-gray-600 mt-2 ${!!prefix && 'pl-11'} ${
 						!!suffix && 'pr-11'
-					} border border-neutral-300 focus:border-blue-500 focus:bg-white focus:outline-none`}
+					} border border-neutral-300 focus:border-blue-500 focus:outline-none`}
 					value={value ?? defaultValue}
 					onChange={onChange}
 				/>

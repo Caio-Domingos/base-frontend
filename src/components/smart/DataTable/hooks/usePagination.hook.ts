@@ -1,7 +1,7 @@
 import { set } from 'date-fns';
 import { useState } from 'react';
 
-interface Pagination {
+export interface Pagination {
 	currentPage: number;
 	totalPages: number;
 	pageSize: number;
