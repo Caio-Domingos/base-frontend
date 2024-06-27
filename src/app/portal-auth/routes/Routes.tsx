@@ -5,6 +5,8 @@ import { lazy, useEffect, useState } from 'react';
 import { RouterProvider, createBrowserRouter, useLocation } from 'react-router-dom';
 import LayoutAuthenticated from './private/_Layout/Layout';
 import type { IStaticMethods } from 'preline';
+import useAuth from '../hooks/supabase/useAuth.hook';
+import ProtectedRoute from './private/_Layout/components/ProtectRoute';
 
 declare global {
 	interface Window {
@@ -78,7 +80,7 @@ export const routeMappings: AppRoutesMap = {
 	},
 };
 
-const unAuthenticatedRoutes = createBrowserRouter([
+const unAuthenticatedRoutes = [
 	{
 		path: routeMappings.login.path,
 		element: routeMappings.login.element,
@@ -87,15 +89,11 @@ const unAuthenticatedRoutes = createBrowserRouter([
 		path: routeMappings.register.path,
 		element: routeMappings.register.element,
 	},
+];
+const authenticatedRoutes = [
 	{
 		path: '/',
-		element: routeMappings.login.element,
-	},
-]);
-const authenticatedRoutes = createBrowserRouter([
-	{
-		path: '/',
-		element: <LayoutAuthenticated />,
+		element: <ProtectedRoute element={<LayoutAuthenticated />} />,
 		children: [
 			{
 				path: routeMappings.home.path,
@@ -113,17 +111,22 @@ const authenticatedRoutes = createBrowserRouter([
 			},
 		],
 	},
-]);
+];
 
 export default function Routes(): React.ReactElement {
 	// TODO Auth logic
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isAuthenticated, setIsAuthenticated] = useState(true);
+	const { isAuthenticated: authed, check } = useAuth();
+
+	useEffect(() => {
+		console.log('Checking auth...');
+	}, [authed]);
 
 	return (
 		<>
 			<NotificationComponent />
-			<RouterProvider router={isAuthenticated ? authenticatedRoutes : unAuthenticatedRoutes} />
+			<RouterProvider router={createBrowserRouter([...unAuthenticatedRoutes, ...authenticatedRoutes])} />
 		</>
 	);
 }

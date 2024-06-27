@@ -11,10 +11,11 @@ import TextField from '@components/form-control/TextField';
 import RegisterHandler from './Register.handler';
 import { addNotification } from '@store/slicers/notification.slicer';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function RegisterScreen(): React.ReactElement {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		window.HSStaticMethods.autoInit();
@@ -52,8 +53,11 @@ export default function RegisterScreen(): React.ReactElement {
 			try {
 				const response = await handler.register(values.name, values.email, values.password);
 				console.log('onSubmit response', response);
+				dispatch(addNotification({ message: 'Conta criada com sucesso', type: 'success', duration: 5000 }));
+				navigate('/login');
 			} catch (error: any) {
 				console.error(error);
+				dispatch(addNotification({ message: error.msg ?? 'Erro ao criar conta', type: 'error', duration: 3000 }));
 			}
 		},
 		onReset: () => {

@@ -20,19 +20,19 @@ export default function SocialButtonsGroup({ buttons }: SocialButtonsGroupProper
 	return (
 		<div className='flex items-center justify-center gap-3 w-full'>
 			{buttons?.google ? (
-				<Button className='flex-auto font-medium' color={buttons.google.color} onClick={buttons.google.onClick}>
+				<Button className='flex-auto font-medium rounded' color={buttons.google.color} onClick={buttons.google.onClick}>
 					{' '}
 					{buttons.google.icon ? <i className='fa-brands text-2xl fa-google' /> : undefined} {buttons.google.text ?? ''}
 				</Button>
 			) : undefined}
 			{buttons?.facebook ? (
-				<Button className='flex-auto font-medium' color={buttons.facebook.color} onClick={buttons.facebook.onClick}>
+				<Button className='flex-auto font-medium rounded' color={buttons.facebook.color} onClick={buttons.facebook.onClick}>
 					{' '}
 					{buttons.facebook.icon ? <i className='fa-brands text-2xl fa-facebook' /> : undefined} {buttons.facebook.text ?? ''}
 				</Button>
 			) : undefined}
 			{buttons?.apple ? (
-				<Button className='flex-auto font-medium' color={buttons.apple?.color} onClick={buttons.apple.onClick}>
+				<Button className='flex-auto font-medium rounded' color={buttons.apple?.color} onClick={buttons.apple.onClick}>
 					{' '}
 					{buttons.apple?.icon ? <i className='fa-brands text-2xl fa-apple' /> : undefined} {buttons.apple?.text ?? ''}
 				</Button>

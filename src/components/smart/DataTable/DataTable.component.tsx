@@ -204,9 +204,12 @@ export default function DataTableComponent<T extends HasId>({
 									</thead>
 									<tbody className='relative divide-y divide-gray-200 dark:divide-neutral-700'>
 										{loading ? (
+											// TODO: Fix this loading state
 											<tr className='px-6 py-4 h-52  whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200'>
-												<div className='absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center'>Loading...</div>
-											</tr>
+													<td>
+														<p className='absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center'>Loading...</p>
+													</td>
+												</tr>
 										) : data.length > 0 ? (
 											data.map((d, index) => (
 												<tr key={index}>
@@ -241,7 +244,7 @@ export default function DataTableComponent<T extends HasId>({
 									</tbody>
 								</table>
 							</div>
-							<div className={!loading ? 'py-1 px-4' : ''}>
+							<div className={loading ? 'py-1 px-4' : ''}>
 								{!loading &&
 								paginationConfig.totalItems &&
 								paginationConfig.pageSize &&

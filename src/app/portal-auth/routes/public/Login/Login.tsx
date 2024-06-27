@@ -6,15 +6,18 @@ import TextField from '@components/form-control/TextField';
 import { useEffect, useMemo } from 'react';
 import LoginHandler from './Login.handler';
 import { useFormik } from 'formik';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '@store/slicers/notification.slicer';
 
 export default function LoginScreen(): React.ReactElement {
 	const location = useLocation();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		window.HSStaticMethods.autoInit();
 	}, [location.pathname]);
-
 
 	const handler = useMemo(() => new LoginHandler(), []);
 	const form = useFormik({
@@ -27,8 +30,12 @@ export default function LoginScreen(): React.ReactElement {
 			try {
 				const response = await handler.loginWithEmailAndPassword(values.email, values.password);
 				console.log('onSubmit response', response);
+
+				navigate('/');
 			} catch (error: any) {
-				console.error(error);
+				console.log('error', error.message);
+				console.log('error', error.code);
+				dispatch(addNotification({ message: error.message ?? 'Erro ao fazer login', type: 'error', duration: 3000 }));
 			}
 		},
 		onReset: () => {
@@ -55,7 +62,7 @@ export default function LoginScreen(): React.ReactElement {
 							Esqueci minha senha{' '}
 						</a>
 					</div>
-					<Button onClick={form.handleSubmit} disabled={!form.isValid || !form.dirty}>
+					<Button onClick={form.handleSubmit} disabled={!form.isValid || !form.dirty} className='rounded-lg'>
 						Criar
 					</Button>
 					<hr className='mt-xl mb-base mx-sm border-neutral-300 dark:border-neutral-700' />
