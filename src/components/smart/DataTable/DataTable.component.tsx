@@ -169,7 +169,7 @@ export default function DataTableComponent<T extends HasId>({
 	return (
 		<>
 			<div id='search-filters' className='flex items-end justify-between w-full flex-wrap'>
-				<div className='w-full md:w-1/3 max-w-[350px]' id='search'>
+				<div className='w-full md:w-1/3 mb-2 md:max-w-[350px]' id='search'>
 					<TextField label='Search' prefix={{ icon: 'fa-solid fa-search' }} value={search} onChange={(e) => setSearch(e.target.value)} />
 				</div>
 				<div className='w-full md:w-auto flex items-center justify-end gap-4' id='data-actions'>
